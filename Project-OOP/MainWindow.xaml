@@ -7,6 +7,19 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Canvas x:Name="canvas1">
+            <!-- De hoofdbal -->
+            <Ellipse x:Name="myBall" Fill="Red" Width="20" Height="20" Canvas.Left="0" Canvas.Top="0" />
 
+            <!-- Extra ballen -->
+            <Ellipse x:Name="levelBall" Fill="Blue" Width="20" Height="20" Canvas.Left="100" Canvas.Top="100" />
+            <Ellipse x:Name="scoreBall" Fill="Green" Width="20" Height="20" Canvas.Left="200" Canvas.Top="200" />
+
+            <!-- TextBlock voor scores -->
+            <TextBlock x:Name="scoresTextBlock" Text="Level: 0 Score: 0" FontSize="12" Foreground="Black" Canvas.Right="10" Canvas.Top="10"/>
+
+            <!-- TextBlock voor timer -->
+            <TextBlock x:Name="timerTextBlock" Text="Time: 0" FontSize="12" Foreground="Black" Canvas.Left="10" Canvas.Top="10"/>
+        </Canvas>
     </Grid>
 </Window>

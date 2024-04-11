@@ -5,21 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_OOP"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" >
     <Grid>
         <Canvas x:Name="canvas1">
-            <!-- De hoofdbal -->
+            <!-- ballen -->
             <Ellipse x:Name="myBall" Fill="Red" Width="20" Height="20" Canvas.Left="0" Canvas.Top="0" />
 
-            <!-- Extra ballen -->
             <Ellipse x:Name="levelBall" Fill="Blue" Width="20" Height="20" Canvas.Left="100" Canvas.Top="100" />
             <Ellipse x:Name="scoreBall" Fill="Green" Width="20" Height="20" Canvas.Left="200" Canvas.Top="200" />
 
-            <!-- TextBlock voor scores -->
+            <!-- TextBlocken -->
             <TextBlock x:Name="scoresTextBlock" Text="Level: 0 Score: 0" FontSize="12" Foreground="Black" Canvas.Right="10" Canvas.Top="10"/>
-
-            <!-- TextBlock voor timer -->
             <TextBlock x:Name="timerTextBlock" Text="Time: 0" FontSize="12" Foreground="Black" Canvas.Left="10" Canvas.Top="10"/>
+
+            <!-- buttons -->
+            <Button Name="HScore" Content="beste scores" Canvas.Left="218" Canvas.Top="49" Click="HScore_Click"/>
         </Canvas>
     </Grid>
 </Window>

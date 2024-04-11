@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Project_OOP
 {
@@ -85,9 +86,18 @@ namespace Project_OOP
             // Add the current score and level to the list
             scoreList.Add(new ScoreData { Score = scoreTouches, Level = currentLevel });
 
-            // Serialize the list and save it to the file
-            string updatedJsonData = JsonConvert.SerializeObject(scoreList);
-            File.WriteAllText(jsonFilePath, updatedJsonData);
+            // Serialize the list and save it to the file with each object on a new line
+            var serializerSettings = new JsonSerializerSettings
+            {
+                Formatting = Formatting.None,
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new CamelCaseNamingStrategy()
+                }
+            };
+            string updatedJsonData = string.Join(",\n", scoreList.Select(JsonConvert.SerializeObject));
+
+            File.WriteAllText(jsonFilePath, $"[\n{updatedJsonData}\n]");
         }
 
         // Event handlers voor het toetsenbord
@@ -255,23 +265,40 @@ namespace Project_OOP
 
                 if (scoreList != null && scoreList.Count > 0)
                 {
-                    // Find the highest score
-                    int highestScore = scoreList.Max(s => s.Score);
+                    // Sort the score list in descending order based on the scores
+                    scoreList = scoreList.OrderByDescending(s => s.Score).ToList();
 
-                    // Find the level associated with the highest score
-                    int highestScoreLevel = scoreList.Where(s => s.Score == highestScore).Max(s => s.Level);
+                    // Take the top 10 scores
+                    List<ScoreData> top10Scores = scoreList.Take(10).ToList();
 
-                    // Find the highest level
-                    int highestLevel = scoreList.Max(s => s.Level);
+                    // Construct the message for the top 10 scores
+                    StringBuilder messageBuilder = new StringBuilder();
+                    messageBuilder.AppendLine("Top 10 hoogste scores:");
+                    for (int i = 0; i < top10Scores.Count; i++)
+                    {
+                        // Add the numbering
+                        messageBuilder.AppendLine($"({i + 1}) Score: {top10Scores[i].Score}, level: {top10Scores[i].Level}");
+                    }
 
-                    // Find the score associated with the highest level
-                    int highestLevelScore = scoreList.Where(s => s.Level == highestLevel).Max(s => s.Score);
+                    // Add a blank line before the top 10 highest levels
+                    messageBuilder.AppendLine();
 
-                    // Display the highest score and level via MessageBox
-                    MessageBox.Show($"Hoogste score: {highestScore}, Level bereikt: {highestScoreLevel}", "Hoogste Score en Level", MessageBoxButton.OK, MessageBoxImage.Information);
+                    // Sort the score list in descending order based on the levels
+                    scoreList = scoreList.OrderByDescending(s => s.Level).ToList();
 
-                    // Display the highest level and associated score via MessageBox
-                    MessageBox.Show($"Hoogste level: {highestLevel}, Score bereikt: {highestLevelScore}", "Hoogste Level en Score", MessageBoxButton.OK, MessageBoxImage.Information);
+                    // Take the top 10 levels
+                    List<ScoreData> top10Levels = scoreList.Take(10).ToList();
+
+                    // Construct the message for the top 10 levels
+                    messageBuilder.AppendLine("Top 10 hoogste levels:");
+                    for (int i = 0; i < top10Levels.Count; i++)
+                    {
+                        // Add the numbering
+                        messageBuilder.AppendLine($"({i + 1}) Level: {top10Levels[i].Level}, score: {top10Levels[i].Score}");
+                    }
+
+                    // Display the message via MessageBox
+                    MessageBox.Show(messageBuilder.ToString(), "Top 10 Scores en Levels", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {
@@ -283,6 +310,5 @@ namespace Project_OOP
                 MessageBox.Show("Het scores bestand bestaat niet");
             }
         }
-
     }
 }

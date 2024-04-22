@@ -84,7 +84,7 @@ namespace Project_OOP
             }
 
             // Add the current score and level to the list
-            scoreList.Add(new ScoreData { Score = scoreTouches, Level = currentLevel });
+            scoreList.Add(new ScoreData { Score = scoreTouches, Level = currentLevel, DateAchieved = DateTime.Now });
 
             // Serialize the list and save it to the file with each object on a new line
             var serializerSettings = new JsonSerializerSettings
@@ -254,60 +254,67 @@ namespace Project_OOP
         {
             public int Score { get; set; }
             public int Level { get; set; }
+            public DateTime DateAchieved { get; set; }
         }
 
         private void HScore_Click(object sender, RoutedEventArgs e)
         {
+            // Check if the file exists
             if (File.Exists(jsonFilePath))
             {
+                // Read existing data from the file
                 string jsonData = File.ReadAllText(jsonFilePath);
+                // Deserialize the JSON data into a list of ScoreData
                 List<ScoreData> scoreList = JsonConvert.DeserializeObject<List<ScoreData>>(jsonData);
 
+                // Check if the list is not null and has any elements
                 if (scoreList != null && scoreList.Count > 0)
                 {
                     // Sort the score list in descending order based on the scores
                     scoreList = scoreList.OrderByDescending(s => s.Score).ToList();
-
                     // Take the top 10 scores
                     List<ScoreData> top10Scores = scoreList.Take(10).ToList();
 
-                    // Construct the message for the top 10 scores
+                    // Initialize the StringBuilder for the message
                     StringBuilder messageBuilder = new StringBuilder();
-                    messageBuilder.AppendLine("Top 10 hoogste scores:");
+                    messageBuilder.AppendLine("Top 10 highest scores:");
+
+                    // Add the top 10 scores and format the date and time
                     for (int i = 0; i < top10Scores.Count; i++)
                     {
-                        // Add the numbering
-                        messageBuilder.AppendLine($"({i + 1}) Score: {top10Scores[i].Score}, level: {top10Scores[i].Level}");
+                        // Format the date and time
+                        string formattedDate = top10Scores[i].DateAchieved.ToString("dd/MM/yyyy HH:mm:ss");
+                        // Add the date and time to the message
+                        messageBuilder.AppendLine($"({i + 1}) Score: {top10Scores[i].Score}, level: {top10Scores[i].Level}, date: {formattedDate}");
                     }
 
-                    // Add a blank line before the top 10 highest levels
-                    messageBuilder.AppendLine();
-
-                    // Sort the score list in descending order based on the levels
+                    // Sort the list in descending order based on levels
                     scoreList = scoreList.OrderByDescending(s => s.Level).ToList();
-
                     // Take the top 10 levels
                     List<ScoreData> top10Levels = scoreList.Take(10).ToList();
 
-                    // Construct the message for the top 10 levels
-                    messageBuilder.AppendLine("Top 10 hoogste levels:");
+                    // Add the top 10 levels and format the date and time
+                    messageBuilder.AppendLine();
+                    messageBuilder.AppendLine("Top 10 highest levels:");
                     for (int i = 0; i < top10Levels.Count; i++)
                     {
-                        // Add the numbering
-                        messageBuilder.AppendLine($"({i + 1}) Level: {top10Levels[i].Level}, score: {top10Levels[i].Score}");
+                        // Format the date and time
+                        string formattedDate = top10Levels[i].DateAchieved.ToString("dd/MM/yyyy HH:mm:ss");
+                        // Add the date and time to the message
+                        messageBuilder.AppendLine($"({i + 1}) Level: {top10Levels[i].Level}, score: {top10Levels[i].Score}, date: {formattedDate}");
                     }
 
-                    // Display the message via MessageBox
-                    MessageBox.Show(messageBuilder.ToString(), "Top 10 Scores en Levels", MessageBoxButton.OK, MessageBoxImage.Information);
+                    // Display the message
+                    MessageBox.Show(messageBuilder.ToString(), "Top 10 Scores and Levels", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {
-                    MessageBox.Show("Geen scores gevonden");
+                    MessageBox.Show("No scores found");
                 }
             }
             else
             {
-                MessageBox.Show("Het scores bestand bestaat niet");
+                MessageBox.Show("The scores file does not exist");
             }
         }
     }

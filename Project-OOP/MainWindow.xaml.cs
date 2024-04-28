@@ -228,6 +228,9 @@ namespace Project_OOP
                 timer.Stop();
                 MessageBox.Show("Tijd is op! Level niet voltooid.", "Tijd op", MessageBoxButton.OK, MessageBoxImage.Information);
 
+                // Roep CheckForNewHighScore aan om te controleren of er een nieuwe hoogste score is bereikt
+                CheckForNewHighScore();
+
                 // Save the scores when the time runs out
                 SaveScoresAndLevel();
 
@@ -315,6 +318,141 @@ namespace Project_OOP
             else
             {
                 MessageBox.Show("The scores file does not exist");
+            }
+        }
+
+        private void DScore_Click(object sender, RoutedEventArgs e)
+        {
+            // Check if the file exists
+            if (File.Exists(jsonFilePath))
+            {
+                // Read existing data from the file
+                string jsonData = File.ReadAllText(jsonFilePath);
+                // Deserialize the JSON data into a list of ScoreData
+                List<ScoreData> scoreList = JsonConvert.DeserializeObject<List<ScoreData>>(jsonData);
+
+                // Get today's date
+                DateTime today = DateTime.Today;
+
+                // Filter the list to only include scores from today
+                List<ScoreData> todayScores = scoreList
+                    .Where(score => score.DateAchieved.Date == today)
+                    .ToList();
+
+                // Sort the filtered list by score in descending order
+                todayScores = todayScores.OrderByDescending(s => s.Score).ToList();
+
+                // Take the top 10 scores
+                List<ScoreData> top10Scores = todayScores.Take(10).ToList();
+
+                // Initialize the StringBuilder for the message
+                StringBuilder messageBuilder = new StringBuilder();
+                messageBuilder.AppendLine("Top 10 highest scores today:");
+
+                // Add the top 10 scores and format the date and time
+                for (int i = 0; i < top10Scores.Count; i++)
+                {
+                    // Format the date and time
+                    string formattedDate = top10Scores[i].DateAchieved.ToString("dd/MM/yyyy HH:mm:ss");
+                    // Add the date and time to the message
+                    messageBuilder.AppendLine($"({i + 1}) Score: {top10Scores[i].Score}, level: {top10Scores[i].Level}, date: {formattedDate}");
+                }
+
+                // Sort the filtered list by level in descending order
+                todayScores = todayScores.OrderByDescending(s => s.Level).ToList();
+
+                // Take the top 10 levels
+                List<ScoreData> top10Levels = todayScores.Take(10).ToList();
+
+                // Add the top 10 levels and format the date and time
+                messageBuilder.AppendLine();
+                messageBuilder.AppendLine("Top 10 highest levels today:");
+                for (int i = 0; i < top10Levels.Count; i++)
+                {
+                    // Format the date and time
+                    string formattedDate = top10Levels[i].DateAchieved.ToString("dd/MM/yyyy HH:mm:ss");
+                    // Add the date and time to the message
+                    messageBuilder.AppendLine($"({i + 1}) Level: {top10Levels[i].Level}, score: {top10Levels[i].Score}, date: {formattedDate}");
+                }
+
+                // Display the message
+                MessageBox.Show(messageBuilder.ToString(), "Top 10 Scores and Levels Today", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("The scores file does not exist");
+            }
+        }
+
+        private void CheckForNewHighScore()
+        {
+            // Lees de bestaande scores van het JSON-bestand
+            List<ScoreData> scoreList;
+            if (File.Exists(jsonFilePath))
+            {
+                string jsonData = File.ReadAllText(jsonFilePath);
+                scoreList = JsonConvert.DeserializeObject<List<ScoreData>>(jsonData);
+            }
+            else
+            {
+                // Als het bestand niet bestaat, maak dan een lege lijst
+                scoreList = new List<ScoreData>();
+            }
+
+            // Initialiseer variabelen voor de hoogste scores
+            int allTimeHighScore = 0;
+            int allTimeHighLevel = 0;
+            int dailyHighScore = 0;
+            int dailyHighLevel = 0;
+
+            // Bereken de hoogste scores aller tijden
+            foreach (var scoreData in scoreList)
+            {
+                if (scoreData.Score > allTimeHighScore)
+                {
+                    allTimeHighScore = scoreData.Score;
+                }
+                if (scoreData.Level > allTimeHighLevel)
+                {
+                    allTimeHighLevel = scoreData.Level;
+                }
+
+                // Controleer of de datum van de score vandaag is
+                if (scoreData.DateAchieved.Date == DateTime.Today)
+                {
+                    if (scoreData.Score > dailyHighScore)
+                    {
+                        dailyHighScore = scoreData.Score;
+                    }
+                    if (scoreData.Level > dailyHighLevel)
+                    {
+                        dailyHighLevel = scoreData.Level;
+                    }
+                }
+            }
+
+            // Controleer of de huidige score of level hoger is dan de hoogste scores aller tijden of dagelijks
+            bool newAllTimeHighScore = scoreTouches > allTimeHighScore;
+            bool newAllTimeHighLevel = levelTouches > allTimeHighLevel;
+            bool newDailyHighScore = scoreTouches > dailyHighScore;
+            bool newDailyHighLevel = levelTouches > dailyHighLevel;
+
+            // Toon een messagebox als er een nieuw hoogste score of level is bereikt
+            if (newAllTimeHighScore)
+            {
+                MessageBox.Show("New all-time highest score achieved!", "Congratulations!", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            if (newAllTimeHighLevel)
+            {
+                MessageBox.Show("New all-time highest level achieved!", "Congratulations!", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            if (newDailyHighScore)
+            {
+                MessageBox.Show("New daily highest score achieved!", "Congratulations!", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            if (newDailyHighLevel)
+            {
+                MessageBox.Show("New daily highest level achieved!", "Congratulations!", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
     }

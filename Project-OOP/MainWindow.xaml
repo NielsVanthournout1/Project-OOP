@@ -5,26 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_OOP"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" >
+        Title="Risk it : Speed Game" Height="450" Width="800" >
     <Grid>
-        <Canvas x:Name="canvas1">
+        <!-- TextBlocken -->
+        <TextBlock x:Name="scoresTextBlock" Text="Level: 0 Score: 0" FontSize="12" Foreground="Black" Canvas.Right="10" Canvas.Top="10" Margin="79,20,-79,379" Height="35"/>
+        <TextBlock x:Name="timerTextBlock" Text="Time: 0" FontSize="12" Foreground="Black" Canvas.Left="10" Canvas.Top="10" Height="35" Margin="295,20,400,379"/>
+
+        <!-- Knoppen -->
+        <Button Name="HScore" Content="Beste scores" Click="HScore_Click" Margin="577,10,146,389" Height="35"/>
+        <Button Name="DScore" Content="Beste scores van de dag" HorizontalAlignment="Left" Margin="659,10,0,0" VerticalAlignment="Top" Click="DScore_Click" Height="35"/>
+        <Button Name="StartStop" Content="Start Level" HorizontalAlignment="Left" Click="StartStop_Click" Margin="10,10,0,389" Height="35" Width="64"/>
+
+        <Canvas x:Name="canvas1" Margin="0,60,0,0">
             <!-- Ballen -->
             <Ellipse x:Name="myBall" Fill="Red" Width="20" Height="20" />
             <Ellipse x:Name="levelBall" Fill="Blue" Width="20" Height="20" />
             <Ellipse x:Name="scoreBall" Fill="Green" Width="20" Height="20" />
 
             <!-- Muren -->
-            <Rectangle x:Name="wall1" Fill="Black" Width="50" Height="10" />
-            <Rectangle x:Name="wall2" Fill="Black" Width="50" Height="10" />
-
-            <!-- TextBlocken -->
-            <TextBlock x:Name="scoresTextBlock" Text="Level: 0 Score: 0" FontSize="12" Foreground="Black" Canvas.Right="10" Canvas.Top="10"/>
-            <TextBlock x:Name="timerTextBlock" Text="Time: 0" FontSize="12" Foreground="Black" Canvas.Left="10" Canvas.Top="10"/>
-
-            <!-- Knoppen -->
-            <Button Name="HScore" Content="Beste scores" Canvas.Left="218" Canvas.Top="49" Click="HScore_Click"/>
-            <Button Name="DScore" Content="Beste scores van de dag" HorizontalAlignment="Left" Margin="319,51,0,0" VerticalAlignment="Top" Click="DScore_Click"/>
-            <Button Name="StartLevel" Content="Start Level" HorizontalAlignment="Left" Canvas.Left="10" Canvas.Top="300" Click="StartLevel_Click"/>
+            <Rectangle x:Name="wall1" Fill="Black" Width="50" Height="10" Canvas.Left="350" Canvas.Top="126" />
+            <Rectangle x:Name="wall2" Fill="Black" Width="50" Height="10" Canvas.Left="236" Canvas.Top="187" />
         </Canvas>
     </Grid>
 </Window>

@@ -5,18 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_OOP"
         mc:Ignorable="d"
-        Title="Risk it : Speed Game" Height="450" Width="800" >
+        Title="Risk it : Speed Game" Height="500" Width="900" >
     <Grid>
-        <!-- TextBlocken -->
-        <TextBlock x:Name="scoresTextBlock" Text="Level: 0 Score: 0" FontSize="12" Foreground="Black" Canvas.Right="10" Canvas.Top="10" Margin="79,20,-79,379" Height="35"/>
-        <TextBlock x:Name="timerTextBlock" Text="Time: 0" FontSize="12" Foreground="Black" Canvas.Left="10" Canvas.Top="10" Height="35" Margin="295,20,400,379"/>
+        <TextBlock x:Name="scoresTextBlock" Text="Level: 0 Score: 0" FontSize="12" HorizontalAlignment="Left" Margin="135,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock x:Name="timerTextBlock" Text="Time: 0" FontSize="12" HorizontalAlignment="Left" Margin="254,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
 
-        <!-- Knoppen -->
-        <Button Name="HScore" Content="Beste scores" Click="HScore_Click" Margin="577,10,146,389" Height="35"/>
-        <Button Name="DScore" Content="Beste scores van de dag" HorizontalAlignment="Left" Margin="659,10,0,0" VerticalAlignment="Top" Click="DScore_Click" Height="35"/>
-        <Button Name="StartStop" Content="Start Level" HorizontalAlignment="Left" Click="StartStop_Click" Margin="10,10,0,389" Height="35" Width="64"/>
+        <Button Name="HScore" Content="Beste scores" Click="HScore_Click" HorizontalAlignment="Left" Margin="821,10,0,0" VerticalAlignment="Top" Height="35"/>
+        <Button Name="StartStop" Content="Start Level" Click="StartStop_Click" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="35" Width="120"/>
+        <Button Name="DScore" Content="Beste scores van de dag" Click="DScore_Click" HorizontalAlignment="Left" Margin="685,10,0,0" VerticalAlignment="Top" Height="35"/>
 
-        <Canvas x:Name="canvas1" Margin="0,60,0,0">
+        <Canvas x:Name="canvas1" Margin="0,50,0,0">
             <!-- Ballen -->
             <Ellipse x:Name="myBall" Fill="Red" Width="20" Height="20" />
             <Ellipse x:Name="levelBall" Fill="Blue" Width="20" Height="20" />
